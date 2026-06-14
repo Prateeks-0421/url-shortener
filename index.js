@@ -1,4 +1,5 @@
 // const  { connectdb }  = require('./connection') ;
+require("dotenv").config();
 const express = require('express') ;
 const app = express() ;
 const urlrouter = require('./routes/url') ; 
@@ -25,6 +26,7 @@ app.set('views' , path.resolve( './views' ) ) ;
 
 app.use(express.json()) ;
 
+
 // parse the form data 
 
 app.use(express.urlencoded( { extended : false } ) ) ;
@@ -36,6 +38,8 @@ app.use('/users' ,   userrouter) ;
 
 // routes 
 app.use('/url' , restrictlogin , urlrouter ) ; 
+
+
 
 
 // handle get request for shortened url 

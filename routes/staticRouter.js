@@ -1,6 +1,7 @@
 const express = require('express') ;
 const staticroute = express.Router() ;
 const url = require('../models/url') ;
+const { handleotpverification } = require("../controllers/otp") ; 
 
 staticroute.get('/' , async (req , res) => {  
 
@@ -27,5 +28,9 @@ staticroute.get("/login", async ( req , res ) => {
        return res.render('login') ; 
 
 }) ; 
+
+
+staticroute.post("/verify-otp" , handleotpverification ) ; 
+
 
 module.exports = { staticroute } ;

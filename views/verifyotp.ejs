@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+     <form action="/verify-otp" method="POST">
+
+<input
+type="hidden"
+name="email"
+value = "<%= email %>" ; 
+/>
+<label for="otp"> enter the otp sent to <%=email%></label>
+<input
+type="text"
+name="otp"
+/>
+
+<button>
+Verify
+</button>
+
+<% if(locals.error){   %>
+     <div> <%= error  %></div>
+<% } %> 
+
+</form>
+
+</body>
+</html>
