@@ -1,4 +1,3 @@
-// const  { connectdb }  = require('./connection') ;
 require("dotenv").config();
 const express = require('express') ;
 const app = express() ;
@@ -38,9 +37,6 @@ app.use('/users' ,   userrouter) ;
 
 // routes 
 app.use('/url' , restrictlogin , urlrouter ) ; 
-
-
-
 
 // handle get request for shortened url 
 app.get('/:shortid' , async (req , res) => {

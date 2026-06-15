@@ -2,6 +2,7 @@ const user = require("../models/user") ;
 const {v4 : uuidv4} = require("uuid") ;
 const {setuser , getuser } = require("../service/auth") ;  
 const transporter =require("../service/email");
+const bcrypt = require("bcrypt") ; 
 async function handlesignup(req , res ) {
 
     body = req.body ;
