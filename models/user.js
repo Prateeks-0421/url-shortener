@@ -14,6 +14,11 @@ userschema = mongoose.Schema( {
     unique : true 
 
  } ,
+ role : {
+   type : String , 
+    enum:["ADMIN","NORMAL"] ,
+   default : "NORMAL"
+ } , 
  password : {
 
     type : String , 

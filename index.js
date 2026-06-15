@@ -7,7 +7,7 @@ const path = require('path') ;
 const { staticroute } = require('./routes/staticRouter') ;
 const userrouter = require("./routes/user")
 const {connectdb}  = require("./connection")
-const {restrictlogin , checkauth } = require("./middleware/auth") ; 
+const {restrictto , checkauth } = require("./middleware/auth") ; 
 const cookieparser = require("cookie-parser") ; 
 
 // connect to the database 
@@ -20,6 +20,7 @@ connectdb('mongodb://localhost/url-app')
     console.error('Error connecting to MongoDB:', error);
   });
 
+ 
 app.set('view engine' , 'ejs') ;    
 app.set('views' , path.resolve( './views' ) ) ;    
 
@@ -35,8 +36,9 @@ app.use('/' , checkauth ,  staticroute ) ;
 
 app.use('/users' ,   userrouter) ; 
 
+
 // routes 
-app.use('/url' , restrictlogin , urlrouter ) ; 
+app.use('/url'  ,  restrictto("NORMAL" , "ADMIN") , urlrouter ) ; 
 
 // handle get request for shortened url 
 app.get('/:shortid' , async (req , res) => {

@@ -10,20 +10,21 @@ async function handlesignup(req , res ) {
       return res.render("signup" , { error : "enter all fields"});
     }
 
+    const hashedpassword = await bcrypt.hash(body.password , 10 ) ; 
+
  const result = await user.create ( {
 
     name : body.name , 
     email : body.email , 
-    password : body.password 
+    password : hashedpassword  
 
  }) ; 
 
    result.save() 
 
-   return res.render("home") ; 
+   return res.redirect("/login") ; 
 
 }
-
 
 async function handlelogin(req , res ) {
 
@@ -34,10 +35,17 @@ async function handlelogin(req , res ) {
 
     }
     
-    const result = await user.findOne( {  email : body.email , password : body.password }) ; 
+    const result = await user.findOne( {  email : body.email }) ; 
 
+    
     if(!result ) {
-      return res.render("login" , { error : "enter the valid username or password "}) ; 
+      return res.render("login" , { error : "enter the valid email address "}) ; 
+    }
+    
+    const ismatch =  await bcrypt.compare(  body.password ,  result.password );
+    
+    if(!ismatch){
+       return res.render("login" , { error : "enter the valid password "}) ; 
     }
 
     const otp = Math.floor(  100000 + Math.random() * 900000 ).toString(); 
@@ -58,9 +66,6 @@ async function handlelogin(req , res ) {
    email:result.email
    });
 
-   
-
 }
-
 
 module.exports = { handlesignup , handlelogin } ; 

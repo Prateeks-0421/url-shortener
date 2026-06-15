@@ -2,6 +2,8 @@ const express = require('express') ;
 const staticroute = express.Router() ;
 const url = require('../models/url') ;
 const { handleotpverification } = require("../controllers/otp") ; 
+const {restrictto , checkauth } = require("../middleware/auth") ; 
+
 
 staticroute.get('/' , async (req , res) => {  
 
@@ -9,7 +11,19 @@ staticroute.get('/' , async (req , res) => {
     
      if(req.user){
 
-    allurls = await url.find({createdby : req.user._id }) ;
+    allurls = await url.find({ createdby : req.user._id }) ;
+    return res.render('home', { urls: allurls }) ;
+
+     } 
+}) ;
+
+staticroute.get('/admin'  , restrictto("ADMIN") , async (req , res) => {  
+
+     if(!req.user ) return res.render("home") ; 
+    
+     if(req.user){
+
+    allurls = await url.find({}) ;
     return res.render('home', { urls: allurls }) ;
 
      } 

@@ -21,8 +21,9 @@ const secretkey = "janhvi@123" ;
 function setuser( user ){
 
  return jwt.sign({
-    id : user._id , 
-    email : user.email 
+    _id : user._id , 
+    email : user.email , 
+    role : user.role 
  } , secretkey ) ; 
 
 }

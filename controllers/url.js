@@ -8,6 +8,10 @@ async function handlepostrequest ( req , res ) {
     if ( !body.url ) {
         return res.status(400).json( { error : 'url is required' } ) ;
     }
+
+    console.log(req.user);
+console.log(req.user._id);
+console.log(req.user.id);
     
   const result =  await url.create( { 
     shortenedurl : shortid(8) , 
