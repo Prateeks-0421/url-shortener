@@ -55,12 +55,27 @@ async function handlelogin(req , res ) {
 
     await result.save();
 
+    try {
+      
+       console.log("About to send OTP");
+      console.log(process.env.EMAIL);
+      
     await transporter.sendMail({
-    from: process.env.EMAIL,
-    to: result.email,
-    subject: "OTP Verification",
-    text: `Your OTP is ${otp}`
+
+        from: process.env.EMAIL,
+        to: result.email,
+        subject: "OTP Verification",
+        text: `Your OTP is ${otp}`
     });
+
+    console.log("OTP sent successfully");
+
+} catch(err) {
+
+    console.log("SEND MAIL ERROR:");
+    console.log(err);
+
+}
 
   res.render("verifyotp",{
    email:result.email

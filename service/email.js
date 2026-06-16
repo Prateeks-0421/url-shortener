@@ -13,12 +13,14 @@ const transporter = nodemailer.createTransport({
     }
 });
 
-// transporter.verify((err, success) => {
-//     if (err) {
-//         console.log(err);
-//     } else {
-//         console.log("Connected");
-//     }
-// });
+
+
+transporter.verify((err, success) => {
+    if (err) {
+        console.log(err);
+    } else {
+        console.log("Connected");
+    }
+});
 
 module.exports = transporter;
