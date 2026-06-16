@@ -1,9 +1,9 @@
 const user = require("../models/user") ; 
 const {v4 : uuidv4} = require("uuid") ;
 const {setuser , getuser } = require("../service/auth") ;  
-// const transporter =require("../service/email");
+const transporter =require("../service/email");
 const bcrypt = require("bcrypt") ; 
-const resend = require("../service/email");
+// const resend = require("../service/email");
 async function handlesignup(req , res ) {
 
     body = req.body ;
@@ -56,36 +56,29 @@ async function handlelogin(req , res ) {
 
     await result.save();
 
-//     try {
+    try {
       
-//        console.log("About to send OTP");
-//       console.log(process.env.EMAIL);
+       console.log("About to send OTP");
+      console.log(process.env.EMAIL);
 
-//     await transporter.sendMail({
+    await transporter.sendMail({
 
-//         from: process.env.EMAIL,
-//         to: result.email,
-//         subject: "OTP Verification",
-//         text: `Your OTP is ${otp}`
-//     });
+        from: process.env.EMAIL,
+        to: result.email,
+        subject: "OTP Verification",
+        text: `Your OTP is ${otp}`
+    });
 
-//     console.log("OTP sent successfully");
+    console.log("OTP sent successfully");
 
-// } catch(err) {
+} catch(err) {
 
-//     console.log("SEND MAIL ERROR:");
-//     console.log(err);
+    console.log("SEND MAIL ERROR:");
+    console.log(err);
 
-// }
+}
  
 
-
-await resend.emails.send({
-  from: "peekingsurfers01@gmail.com",
-  to: result.email,
-  subject: "OTP Verification",
-  text: `Your OTP is ${otp}`,
-});
 
   res.render("verifyotp",{
    email:result.email
