@@ -9,10 +9,6 @@ async function handlepostrequest ( req , res ) {
         return res.status(400).json( { error : 'url is required' } ) ;
     }
 
-    console.log(req.user);
-console.log(req.user._id);
-console.log(req.user.id);
-    
   const result =  await url.create( { 
     shortenedurl : shortid(8) , 
     originalurl : body.url , 
@@ -22,7 +18,10 @@ console.log(req.user.id);
 
 ) ; 
 
-return res.status(201).render('home' , { shortid : result.shortenedurl } ) ;
+ allurls = await url.find({ createdby : req.user._id }) ;
+
+
+return res.status(201).render('home' , { shortid : result.shortenedurl , urls : allurls ,  user : req.user} ) ;
  
 // return res.status(201).json( { shortenedurl : result.shortenedurl } ) ;
 

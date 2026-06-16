@@ -40,7 +40,9 @@ if( body.otp !== user.otp ) {
    const token = setuser(user) ;
     res.cookie("uid" , token ) ;
 
-    return res.redirect("/") ; 
+     allurls = await url.find({ createdby : user._id }) ;
+
+    return res.status(201).render('home' , {  user : user , urls : allurls  } ) ;
 
 }
 

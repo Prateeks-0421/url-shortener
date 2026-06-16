@@ -7,24 +7,24 @@ const {restrictto , checkauth } = require("../middleware/auth") ;
 
 staticroute.get('/' , async (req , res) => {  
 
-     if(!req.user ) return res.render("home") ; 
+     if(!req.user ) return res.render("home" , { user : null }) ; 
     
      if(req.user){
 
     allurls = await url.find({ createdby : req.user._id }) ;
-    return res.render('home', { urls: allurls }) ;
+    return res.render('home', { urls: allurls , user : req.user} ) ;
 
      } 
 }) ;
 
 staticroute.get('/admin'  , restrictto("ADMIN") , async (req , res) => {  
 
-     if(!req.user ) return res.render("home") ; 
+     if(!req.user ) return res.render("home" , { user : null } ) ; 
     
      if(req.user){
 
     allurls = await url.find({}) ;
-    return res.render('home', { urls: allurls }) ;
+    return res.render('home', { urls: allurls  , user : req.user }) ;
 
      } 
 }) ;
@@ -43,6 +43,13 @@ staticroute.get("/login", async ( req , res ) => {
 
 }) ; 
 
+staticroute.get("/logout", async ( req , res ) => {
+       
+     res.clearCookie("uid");
+
+    return res.redirect("/");
+
+}) ; 
 
 staticroute.post("/verify-otp" , handleotpverification ) ; 
 

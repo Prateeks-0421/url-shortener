@@ -4,27 +4,151 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup page</title>
+     <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: lightblue;
+}
+
+.signup-container{
+    background:white;
+    padding:40px;
+    width:400px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+.signup-container h1{
+    text-align:center;
+    margin-bottom:25px;
+    color:#333;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:18px;
+}
+
+label{
+    margin-bottom:8px;
+    font-weight:bold;
+    color:#555;
+}
+
+input{
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+    outline:none;
+}
+
+input:focus{
+    border-color:yellow;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background:rgb(233, 180, 21);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    background:rgb(153, 118, 13);
+}
+
+.error{
+    margin-top:15px;
+    text-align:center;
+    color:red;
+    font-weight:bold;
+}
+
+.login-link{
+    text-align:center;
+    margin-top:15px;
+}
+
+.login-link a{
+    text-decoration:none;
+    color:rgb(233, 180, 21);
+    font-weight:bold;
+}
+
+</style>
 </head>
-<body>
-    
-    <form method="POST" action="/users" >
+<body>  
 
-         <label > Name </label>
-         <input type="text" id = "name" name = "name" placeholder="enter your name " >
-         <label > Email </label>
-         <input type="email" id = "email" name = "email" placeholder="enter your email" >
-         <label>Password </label>
-         <input type="text" id = "password" name = "password" placeholder="enter your password ">
-         
-         <button type = "submit" >signup</button>
+    <div class="signup-container">
+
+    <h1>Signup</h1>
+
+    <form method="POST" action="/users">
+
+        <div class="form-group">
+        <label > Name </label>
+         <input type="text" id = "name" name = "name" placeholder="enter your name "  required >
+          </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                required
+            >
+        </div>
+
+        <button type="submit">
+            Signup
+        </button>
+
     </form>
-    <% if(locals.error ){ %>
 
-        <p>
-         <%= error %>
+    <% if(locals.error){ %>
+        <p class="error">
+            <%= error %>
         </p>
+    <% } %>
 
+    <div class="login-link">
+       Already have a account ?
+        <a href="/login">login</a>
+    </div>
 
-        <% } %> 
+</div>
+    
+   
 </body>
 </html>
