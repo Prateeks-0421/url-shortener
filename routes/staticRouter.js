@@ -1,8 +1,10 @@
 const express = require('express') ;
 const staticroute = express.Router() ;
 const url = require('../models/url') ;
-const { handleotpverification } = require("../controllers/otp") ; 
+const { handleotpverification , handleotpverificationagain } = require("../controllers/otp") ; 
 const {restrictto , checkauth } = require("../middleware/auth") ; 
+const users =  require('../models/user')
+const bcrypt = require("bcrypt") ; 
 
 
 staticroute.get('/' , async (req , res) => {  
@@ -52,6 +54,30 @@ staticroute.get("/logout", async ( req , res ) => {
 }) ; 
 
 staticroute.post("/verify-otp" , handleotpverification ) ; 
+
+staticroute.post("/verify-otp-again" , handleotpverificationagain ) ; 
+
+staticroute.post("/changepassword", async ( req , res ) => {
+       
+  body = req.body ; 
+
+  if(!body.password){
+     res.render("changepassword" , { email : body.email , error : "enter the password "}) ;
+  }
+
+  const user = await users.findOne({ email : body.email }) ;
+
+  const hashedpassword = await bcrypt.hash(body.password , 10 ) ; 
+  
+  user.password = hashedpassword ; 
+
+  await user.save() ; 
+
+  const allurls = await url.find({  createdby : user._id }) ; 
+   
+  res.render("home" , { urls : allurls , user : user }) ; 
+
+}) ; 
 
 
 module.exports = { staticroute } ;

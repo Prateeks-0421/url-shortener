@@ -86,4 +86,65 @@ async function handlelogin(req , res ) {
 
 }
 
-module.exports = { handlesignup , handlelogin } ; 
+async function handleforgetpasswordemail( req , res ){
+
+ res.render("forget-passwordemail") ; 
+
+
+}
+
+async function handlesendingotp( req , res ){
+
+body = req.body ; 
+
+if(!body ) {
+   res.render("forget-passwordemail", { error : "enter the mail "} ) ;
+}
+
+
+ const result = await user.findOne( {  email : body.email }) ; 
+
+    
+    if(!result ) {
+      return res.render("forget-passwordemail" , { error : "enter the valid email address "}) ; 
+    }
+    
+ 
+    const otp = Math.floor(  100000 + Math.random() * 900000 ).toString(); 
+
+    result.otp = otp;
+    result.otpexpiry =  Date.now() + 5*60*1000;
+
+    await result.save();
+
+    try {
+      
+       console.log("About to send OTP");
+      console.log(process.env.EMAIL);
+
+    await transporter.sendMail({
+
+        from: process.env.EMAIL,
+        to: result.email,
+        subject: "OTP Verification",
+        text: `Your OTP is ${otp}`
+    });
+
+    console.log("OTP sent successfully");
+
+} catch(err) {
+
+    console.log("SEND MAIL ERROR:");
+    console.log(err);
+
+}
+ 
+
+res.render("forget-passwordotp" , { email : result.email }) ; 
+
+
+}
+
+
+
+module.exports = { handlesignup , handlelogin , handleforgetpasswordemail , handlesendingotp} ; 
