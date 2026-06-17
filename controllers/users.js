@@ -3,6 +3,7 @@ const {v4 : uuidv4} = require("uuid") ;
 const {setuser , getuser } = require("../service/auth") ;  
 const transporter =require("../service/email");
 const bcrypt = require("bcrypt") ; 
+const axios = require("axios") ; 
 // const resend = require("../service/email");
 async function handlesignup(req , res ) {
 
@@ -56,28 +57,60 @@ async function handlelogin(req , res ) {
 
     await result.save();
 
-    try {
+//     try {
       
-       console.log("About to send OTP");
-      console.log(process.env.EMAIL);
+//        console.log("About to send OTP");
+//       console.log(process.env.EMAIL);
 
-    await transporter.sendMail({
+//     await transporter.sendMail({
 
-        from: process.env.EMAIL,
-        to: result.email,
-        subject: "OTP Verification",
-        text: `Your OTP is ${otp}`
-    });
+//         from: process.env.EMAIL,
+//         to: result.email,
+//         subject: "OTP Verification",
+//         text: `Your OTP is ${otp}`
+//     });
 
-    console.log("OTP sent successfully");
+//     console.log("OTP sent successfully");
+
+// } catch(err) {
+
+//     console.log("SEND MAIL ERROR:");
+//     console.log(err);
+
+// }
+ 
+try {
+
+  await axios.post(
+    "https://api.brevo.com/v3/smtp/email",
+    {
+      sender: {
+        name: "URL Shortener",
+        email: "peekingsurfers01@gmail.com"
+      },
+      to: [
+        {
+          email: result.email
+        }
+      ],
+      subject: "OTP Verification",
+      textContent: `Your OTP is ${otp}`
+    },
+    {
+      headers: {
+        "api-key": process.env.BREVO_API_KEY,
+        "Content-Type": "application/json"
+      }
+    }
+  );
+
+  console.log("Email sent");
 
 } catch(err) {
 
-    console.log("SEND MAIL ERROR:");
-    console.log(err);
+  console.log(err.response?.data || err.message);
 
 }
- 
 
 
   res.render("verifyotp",{

@@ -26,6 +26,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+
 console.log("SMTP_USER:", process.env.SMTP_USER);
 
 // mongosh "mongodb+srv://cluster0.688qkt1.mongodb.net/" --username peekingsurfers01_db_user
